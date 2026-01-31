@@ -1,0 +1,29 @@
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: web-app-deployment
+  labels:
+    app: web-app
+spec:
+  replicas: 2                         # We want 2 copies of our app running
+  selector:
+    matchLabels:
+      app: web-app                    # The Deployment looks for Pods with this label
+  template:                           # This is the "blueprint" for the Pods
+    metadata:
+      labels:
+        app: web-app                  # This label MUST match the selector above
+    spec:
+      containers:
+      - name: nginx-container
+        image: k8s-web-app:v1
+        imagePullPolicy: Never        # Use local image, do not pull from registry
+        ports:
+        - containerPort: 80           # The port the container listens on
+        resources:
+          requests:
+            memory: "64Mi"            # Minimum memory required (64 Mebibytes)
+            cpu: "250m"               # Minimum CPU required (1/4 of a cpu i.e., 250 millicores)
+          limits:
+            memory: "128Mi"           # Maximum memory allowed (128 Mebibytes)
+            cpu: "500m"               # Maximum CPU allowed (1/2 of a cpu i.e., 500 millicores)

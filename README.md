@@ -1,9 +1,3 @@
-Here is a **single, complete `README.md` file**, ready to **copy-paste as-is** into your repository.
-No explanations, no splits, no extras — **one file only**.
-
----
-
-````md
 # Local Kubernetes Fundamentals (Minikube)
 
 ## 📖 Key Concepts (Theory)
@@ -241,9 +235,5 @@ kubectl delete namespace k8s-learn-ns
 ```bash
 minikube stop
 ```
-
-```
-
----
 
 

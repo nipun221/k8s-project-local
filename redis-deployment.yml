@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  namespace: k8s-learn-ns
+  labels:
+    app: redis
+spec:
+  replicas: 1                         # Databases usually start with 1 replica to avoid complex sync logic
+  selector:
+    matchLabels:
+      app: redis
+  template:                           # This is the "blueprint" for the Pods
+    metadata:
+      labels:
+        app: redis                      # This label MUST match the selector above
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379          # Default port for Redis
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: redis-storage          # Must match the name in 'volumes' below
+          mountPath: /data             # Where Redis saves data inside the container
+      volumes:
+      - name: redis-storage
+        persistentVolumeClaim:
+          claimName: redis-pvc         # Must match the name of the PVC defined in redis

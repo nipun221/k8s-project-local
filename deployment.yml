@@ -28,3 +28,22 @@ spec:
           limits:
             memory: "128Mi"           # Maximum memory allowed (128 Mebibytes)
             cpu: "500m"               # Maximum CPU allowed (1/2 of a cpu i.e., 500 millicores)
+        volumeMounts:
+        - name: html-volume
+          mountPath: /usr/share/nginx/html  # This overwrites the existing folder in the nginx image
+        liveinessProbe:               # "Are you dead?" (If yes, restart)
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5      # Wait 5 seconds before first probe
+          periodSeconds: 10           # Probe every 10 seconds
+        readinessProbe:               # Can you take take traffic?" (If no, remove from service endpoints)
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5      # Wait 5 seconds before first probe
+          periodSeconds: 10           # Probe every 10 seconds
+      volumes:
+      - name: html-volume
+        configMap: 
+          name: webapp-config

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: load-generator
+  namespace: k8s-learn-ns
+  labels:
+    app: load-generator
+spec:
+  replicas: 5  # Start with 5 attackers
+  selector:
+    matchLabels:
+      app: load-generator
+  template:
+    metadata:
+      labels:
+        app: load-generator
+    spec:
+      containers:
+      - name: busybox
+        image: busybox
+        # The command loop is slightly more aggressive here
+        command: ["/bin/sh", "-c", "while true; do wget -q -O- http://web-app-service; done"]
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"

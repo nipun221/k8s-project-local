@@ -31,7 +31,7 @@ spec:
         volumeMounts:
         - name: html-volume
           mountPath: /usr/share/nginx/html  # This overwrites the existing folder in the nginx image
-        liveinessProbe:               # "Are you dead?" (If yes, restart)
+        livenessProbe:               # "Are you dead?" (If yes, restart)
           httpGet:
             path: /
             port: 80
